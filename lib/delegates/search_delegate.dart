@@ -40,11 +40,11 @@ class DataSearch extends SearchDelegate<String>{
     if(query.isEmpty)
       return Container();
     else{
-      print("Query para futurebuilder: $query");
+      //print("Query para futurebuilder: $query");
       return FutureBuilder<List>(
         future: suggestions(query),
         builder: (context, snapshot){
-          print(snapshot.hasData);
+          //print(snapshot.hasData);
           if(!snapshot.hasData){
             return Center(child: CircularProgressIndicator(),);
           }else{
@@ -78,10 +78,10 @@ class DataSearch extends SearchDelegate<String>{
         "format=5&"
         "alt=json"
     );
-    print(response.body);
+    //print(response.body);
     if(response.statusCode == 200){
       return json.decode(response.body)[1].map((value){
-        print(value[0]);
+        //(value[0]);
         return value[0];
       }).toList();
     }else{

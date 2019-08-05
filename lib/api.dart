@@ -23,7 +23,7 @@ class Api{
             "key=$API_KEY&"
             "maxResults=10"
     );
-    decodeJson(response);
+    return decodeJson(response);
   }
 
   List<Video> decodeJson(http.Response response){
@@ -33,7 +33,8 @@ class Api{
       List<Video> videos = decoded["items"].map<Video>((map){
         return Video.fromJson(map);
       }).toList();
-      print(videos);
+      //print(videos);
+      return videos;
     }else{
       throw Exception("Falha ao carregar videos");
     }
