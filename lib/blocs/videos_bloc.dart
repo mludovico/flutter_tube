@@ -3,11 +3,12 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter_tube/models/video.dart';
 import '../api.dart';
 
-class VideoBloc extends BlocBase{
+class VideoBloc implements BlocBase{
   Api api;
   List<Video> videos;
 
   final StreamController<List<Video>> _videosController = StreamController<List<Video>>();
+
   Stream get outVideos => _videosController.stream;
 
   final StreamController<String> _searchController = StreamController<String>();
@@ -20,11 +21,12 @@ class VideoBloc extends BlocBase{
   }
 
   void _search(String search) async {
-    if(search != null)
+    if(search != null) {
+      _videosController.sink.add([]);
       videos = await api.search(search);
+    }
     else
       videos += await api.nextPage();
-    print(videos);
     _videosController.sink.add(videos);
   }
 
