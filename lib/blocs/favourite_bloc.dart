@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter_tube/models/video.dart';
+import 'package:rxdart/rxdart.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FavouriteBloc implements BlocBase{
   Map<String, Video> _favourites = {};
 
-  final StreamController<Map<String, Video>> _favController = StreamController<Map<String, Video>>.broadcast();
+  final _favController = BehaviorSubject<Map<String, Video>>(seedValue: {});
   Stream<Map<String, Video>> get outFav => _favController.stream;
 
   FavouriteBloc(){
@@ -21,6 +21,7 @@ class FavouriteBloc implements BlocBase{
             }
         ).cast<String, Video>();
       }
+      _favController.add(_favourites);
     });
   }
 
@@ -29,6 +30,13 @@ class FavouriteBloc implements BlocBase{
     else _favourites[video.id] = video;
 
     _favController.sink.add(_favourites);
+    _saveFav();
+  }
+
+  void _saveFav(){
+    SharedPreferences.getInstance().then((prefs){
+      prefs.setString("favourites", json.encode(_favourites));
+    });
   }
 
   @override

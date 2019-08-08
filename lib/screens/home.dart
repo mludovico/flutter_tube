@@ -5,6 +5,8 @@ import 'package:flutter_tube/blocs/videos_bloc.dart';
 import 'package:flutter_tube/delegates/search_delegate.dart';
 import 'package:flutter_tube/widgets/video_tile.dart';
 
+import 'favourites.dart';
+
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,13 @@ class Home extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.star),
-            onPressed: (){}
+            onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context)=>Favourites()
+                )
+              );
+            }
           ),
           IconButton(
             icon: Icon(Icons.search),
@@ -53,7 +61,6 @@ class Home extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: videoBloc.outVideos,
-          initialData: [],
           builder: (context, snapshot){
           if(!snapshot.hasData){
             return Container();
